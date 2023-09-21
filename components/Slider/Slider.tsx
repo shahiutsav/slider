@@ -7,15 +7,24 @@ import { products } from "@/data/ProductData";
 import style from "./slider.module.css";
 
 const Slider = () => {
-    const [slideDuration, setSlideDuration] = useState(10000);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
-    const [seconds, setSeconds] = useState(0);
+    // Lifespan of a slide in seconds
+    const slideDuration = 5;
 
+    // Set active index to initially be 0
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    // Reference value to check if the area is hovered or not
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Use to display the seconds in the slide
+    const [seconds, setSeconds] = useState(slideDuration);
+
+    // Store the slider container's reference later on
     const containerRef = useRef(null);
 
-    // Used for scrolling animation
+    // Scroll the slides once there is change in active index
     useEffect(() => {
+        setSeconds(slideDuration);
         // Calculate the scroll offset based on the width of a ProductItem
         if (containerRef.current != null) {
             const container = containerRef.current as any;
@@ -29,28 +38,30 @@ const Slider = () => {
         }
     }, [activeIndex]);
 
-    // Used for automatically setting the active index and checking hover as well
+    // Used for automatically changing the active index and checking hover as well
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (!isHovered) {
+        if (!isHovered) {
+            // Only automatically change index if not hovered
+            const interval = setInterval(() => {
                 setActiveIndex((activeIndex + 1) % products.length);
-            }
-        }, slideDuration);
-        console.log("I am changing in ", slideDuration);
+            }, slideDuration * 1000);
 
-        return () => clearInterval(interval);
+            return () => clearInterval(interval);
+        }
     }, [activeIndex, isHovered]);
 
-    // Checker function for count up timer
+    // Used for count down timer
     useEffect(() => {
-        const interval = setInterval(() => {
-            setSeconds((seconds) => 10 - (seconds + 1));
-        }, 1000);
-        return () => clearInterval(interval);
-    }, []);
+        if (!isHovered) {
+            const interval = setInterval(() => {
+                setSeconds((second) => second - 1);
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [isHovered]);
 
     return (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-10 max-w-full">
             {/* ------------ Product Navigation Buttons ------------ */}
             <ul className="flex justify-around w-full">
                 {products.map((product, index) => {
@@ -70,13 +81,14 @@ const Slider = () => {
 
             {/* ------------ Product Slider ------------ */}
             <div
-                className={`flex flex-nowrap overflow-x-hidden w-full ${style.container}`}
+                className={`flex flex-nowrap overflow-x-hidden w-full cursor-default ${style.container}`}
                 ref={containerRef}
                 onMouseEnter={() => {
                     setIsHovered(true);
                 }}
                 onMouseLeave={() => {
                     setIsHovered(false);
+                    setSeconds(slideDuration);
                 }}
             >
                 <span className="absolute">
