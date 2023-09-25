@@ -58,6 +58,21 @@
     transform: scale(15.7) rotate(45deg);
 }
 
+.activeButton .buttonBox .customBorder {
+    transform: scale(15.7) rotate(45deg);
+}
+
+.activeButton .buttonBox button {
+    color: white;
+}
+
+.activeButton .buttonBox {
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+        rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+        rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    transition: box-shadow 0.5s ease-in-out;
+}
+
 .buttonBox:hover .icon {
     color: white;
     transition: color 0.5s ease-in-out;

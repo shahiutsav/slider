@@ -13,7 +13,7 @@ const Slider = () => {
     // Set active index to initially be 0
     const [activeIndex, setActiveIndex] = useState(0);
 
-    // Reference value to check if the area is hovered or not
+    // Reference value to check if the slider area is hovered or not
     const [isHovered, setIsHovered] = useState(false);
 
     // Use to display the seconds in the slide
@@ -58,7 +58,7 @@ const Slider = () => {
             }, 1000);
             return () => clearInterval(interval);
         }
-    }, [isHovered]);
+    }, [activeIndex, isHovered]);
 
     return (
         <div className="flex flex-col gap-10 max-w-full">
@@ -72,8 +72,9 @@ const Slider = () => {
                             color={product.color}
                             onClick={() => {
                                 setActiveIndex(index);
+                                setSeconds(slideDuration);
                             }}
-                            active={activeIndex === index}
+                            isActive={activeIndex === index}
                         />
                     );
                 })}

@@ -5,15 +5,20 @@ const NavigationButton = ({
     title,
     color,
     onClick,
-    active,
+    isActive,
 }: {
     title: string;
     color: string;
     onClick: MouseEventHandler;
-    active: boolean;
+    isActive: boolean;
 }) => {
     return (
-        <li className="flex flex-col items-center gap-5" onClick={onClick}>
+        <li
+            className={`flex flex-col items-center gap-5 ${
+                isActive ? style.activeButton : ""
+            }`}
+            onClick={onClick}
+        >
             <div className={`${style.buttonBox} border border-${color}-400`}>
                 <button className={style.icon}>Hover</button>
                 <div className={`${style.customBorder} bg-${color}-400`}></div>
